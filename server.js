@@ -101,7 +101,12 @@ function serveStatic(req, res, urlPath) {
         return res.end('404 - الملف غير موجود');
       }
       const ext = path.extname(finalPath).toLowerCase();
-      const mime = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.css': 'text/css' }[ext] || 'application/octet-stream';
+      const mime = {
+        '.html': 'text/html; charset=utf-8',
+        '.js': 'application/javascript',
+        '.css': 'text/css',
+        '.png': 'image/png',
+      }[ext] || 'application/octet-stream';
       res.writeHead(200, { 'Content-Type': mime });
       res.end(content);
     });
