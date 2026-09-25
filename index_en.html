@@ -27,9 +27,8 @@ a{color:inherit}
 /* Header */
 .header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#fff;border-bottom:1px solid var(--line)}
 .header-in{max-width:1200px;margin:0 auto;height:64px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.logo{font-weight:700;font-size:1.25rem;text-decoration:none;display:flex;align-items:center;gap:8px}
-.logo-dot{width:28px;height:28px;border-radius:9px;background:var(--ink);display:grid;place-items:center}
-.logo-dot::after{content:"";width:12px;height:12px;border-radius:4px;background:var(--blue)}
+.logo{display:flex;align-items:center}
+.logo img{height:42px;width:auto;max-width:min(52vw,220px);object-fit:contain}
 .actions{display:flex;align-items:center;gap:8px}
 .lang-btn{border:1.5px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.9rem}
 .lang-btn:hover{background:var(--ink);color:#fff}
@@ -141,7 +140,7 @@ a{color:inherit}
 
 <header class="header">
   <div class="header-in">
-    <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span><span data-i18n="brand">ساعة ذكية</span></a>
+    <a href="#" class="logo"><img src="assets/branding/brand-logo.png" alt="Al-Etihad"></a>
     <div class="actions">
       <button class="lang-btn" id="langBtn" aria-label="Switch to Arabic">AR</button>
       <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
