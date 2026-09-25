@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -143,7 +143,7 @@ a{color:inherit}
   <div class="header-in">
     <a href="#" class="logo"><span class="logo-dot" aria-hidden="true"></span><span data-i18n="brand">ساعة ذكية</span></a>
     <div class="actions">
-      <button class="lang-btn" id="langBtn" aria-label="Switch to English">EN</button>
+      <button class="lang-btn" id="langBtn" aria-label="Switch to Arabic">AR</button>
       <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -305,14 +305,13 @@ function setLang(l){
  lang=l; document.documentElement.lang=l; document.documentElement.dir=l==="ar"?"rtl":"ltr";
  document.title=T[l].brand; $("langBtn").textContent=l==="ar"?"EN":"AR";
  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=T[l][el.dataset.i18n]);
- 
  const B=l==="ar"?BRAND_AR:BRAND_EN;
  $("giftText").textContent=T[l].gift(B); $("logoNote").textContent=T[l].logo(B);
  $("fGift").textContent=T[l].gift(B); $("fLogo").textContent=T[l].logo(B);
  renderBanner(); renderProducts();
  if($("fRegion")){fillRegions();setModel();}
 }
-$("langBtn").onclick=()=>window.location.href="index_en.html";
+$("langBtn").onclick=()=>window.location.href="index.html";
 
 const drawer=$("drawer"),scrim=$("scrim"),burger=$("burger");
 function toggle(open){drawer.classList.toggle("open",open);scrim.classList.toggle("open",open);burger.setAttribute("aria-expanded",open)}
@@ -376,7 +375,7 @@ $("orderForm").addEventListener("submit",e=>{e.preventDefault();
  $("formView").hidden=true;$("doneView").hidden=false;$("doneBtn").focus();
 });
 
-setLang("ar"); restart();
+setLang("en"); restart();
 </script>
 </body>
 </html>
