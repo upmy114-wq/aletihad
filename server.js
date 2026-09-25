@@ -106,6 +106,8 @@ function serveStatic(req, res, urlPath) {
         '.js': 'application/javascript',
         '.css': 'text/css',
         '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
       }[ext] || 'application/octet-stream';
       res.writeHead(200, { 'Content-Type': mime });
       res.end(content);
